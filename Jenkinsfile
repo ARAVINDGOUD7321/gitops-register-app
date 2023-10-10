@@ -1,7 +1,8 @@
 pipeline {
     agent { label "Jenkins-Agent" }
-    environment {
-              APP_NAME = "register-app-pipeline"
+    tools {
+            jdk 'Java17'
+            maven 'Maven3'
     }
 
     stages {
@@ -14,6 +15,16 @@ pipeline {
         stage("Checkout from SCM") {
                steps {
                    git branch: 'main', credentialsId: 'github', url: 'https://github.com/ARAVINDGOUD7321/gitops-register-app'
+               }
+        }
+         stage("Build Application") {
+               steps {
+                   sh "maven clean packge"
+               }
+        }
+         stage("Test Application") {
+               steps {
+                   sh "maven test"
                }
         }
 
